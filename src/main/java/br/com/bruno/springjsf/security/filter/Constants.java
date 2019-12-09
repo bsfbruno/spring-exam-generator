@@ -2,6 +2,8 @@ package br.com.bruno.springjsf.security.filter;
 
 import java.util.concurrent.TimeUnit;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 public class Constants {
 
 	public static final String SECRET = "secret";
@@ -12,5 +14,6 @@ public class Constants {
 	public static void main(String[] args) {
 		//converting 1 day to milliseconsds
 		System.out.println(TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS));
+		System.out.println(new BCryptPasswordEncoder().encode("senhamestre"));
 	}
 }

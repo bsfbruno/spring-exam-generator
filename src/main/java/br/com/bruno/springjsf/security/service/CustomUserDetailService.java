@@ -1,4 +1,4 @@
-package br.com.bruno.springjsf.service;
+package br.com.bruno.springjsf.security.service;
 
 import java.util.Collection;
 import java.util.List;

@@ -18,7 +18,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import br.com.bruno.springjsf.persistence.model.ApplicationUser;
-import br.com.bruno.springjsf.service.CustomUserDetailService;
+import br.com.bruno.springjsf.security.service.CustomUserDetailService;
 import io.jsonwebtoken.Jwts;
 
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter{
