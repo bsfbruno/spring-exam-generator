@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.bruno.springjsf.persistence.repository.CourseRepository;
+import br.com.bruno.springjsf.util.EndpointUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -18,15 +19,17 @@ import io.swagger.annotations.ApiOperation;
 public class CourseEndpoint {
 
 	private final CourseRepository courseRepository;
+	private final EndpointUtil endpointUtil;
 
 	@Autowired
-	public CourseEndpoint(CourseRepository courseRepository) {
+	public CourseEndpoint(CourseRepository courseRepository, EndpointUtil endpointUtil) {
 		this.courseRepository = courseRepository;
+		this.endpointUtil = endpointUtil;
 	}
 	
 	@ApiOperation(value = "Return a course based on its id")
 	@GetMapping(path = "{id}")
 	public ResponseEntity<?> getCourseById(@PathVariable long id) {
-		return new ResponseEntity<>(courseRepository.findById(id), HttpStatus.OK);
+		return endpointUtil.returnObjectOrNotFound(courseRepository.findOne(id));
 	}
 }
