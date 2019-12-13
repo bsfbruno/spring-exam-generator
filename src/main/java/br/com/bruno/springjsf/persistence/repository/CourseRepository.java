@@ -24,4 +24,7 @@ public interface CourseRepository extends PagingAndSortingRepository<Course, Lon
 	
 	@Query("delete from Course c where c = ?1 and c.professor = ?#{principal.professor}")
 	void delete(Course course);
+	
+	@Query("select c from Course c where c = ?1 and c.professor = ?#{principal.professor}")
+	Course findOne(Course course);
 }
