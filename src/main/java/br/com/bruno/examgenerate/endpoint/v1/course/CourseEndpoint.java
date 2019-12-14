@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -64,5 +65,12 @@ public class CourseEndpoint {
 		courseService.throwResourceNotFoundCourse(course);
 		courseRepository.save(course);
 		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@ApiOperation(value = "Create course and return the course created")
+	@PostMapping
+	public ResponseEntity<?> create(@Valid @RequestBody Course course) {
+		course.setProfessor(endpointUtil.extractProfessorFromToken());
+		return new ResponseEntity<>(courseRepository.save(course), HttpStatus.OK);
 	}
 }
