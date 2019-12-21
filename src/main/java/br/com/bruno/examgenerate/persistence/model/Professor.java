@@ -17,6 +17,17 @@ public class Professor extends AbstractEntity{
 	@NotEmpty(message = "The field name cannot be empty")
 	@Column(unique = true)
 	private String email;
+	
+	public Professor() {
+		
+	}
+
+	@Generated("SparkTools")
+	private Professor(Builder builder) {
+		this.id = builder.id;
+		this.name = builder.name;
+		this.email = builder.email;
+	}
 			
 	public String getName() {
 		return name;
@@ -30,14 +41,6 @@ public class Professor extends AbstractEntity{
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
-	@Generated("SparkTools")
-	private Professor(Builder builder) {
-		this.id = builder.id;
-		this.name = builder.name;
-		this.email = builder.email;
-	}
-	
 	/**
 	 * Creates builder to build {@link Professor}.
 	 * @return created builder
@@ -77,5 +80,4 @@ public class Professor extends AbstractEntity{
 			return new Professor(this);
 		}
 	}
-	
 }

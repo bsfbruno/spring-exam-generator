@@ -18,6 +18,10 @@ public class Course extends AbstractEntity{
 	@ManyToOne(optional = false)
 	private Professor professor;
 	
+	public Course() {
+		
+	}
+	
 	public String getName() {
 		return name;
 	}
