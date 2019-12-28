@@ -19,7 +19,7 @@ public class CourseService {
 	
 	public void throwResourceNotFoundCourse(long courseId) {
 		if (courseId == 0 || courseRepository.findOne(courseId) == null) {
-			throw new ResouceNotFoundException("Course not found");
+			throw new ResouceNotFoundException("Course not found");			
 		}
 	}
 	

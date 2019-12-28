@@ -1,4 +1,4 @@
-package br.com.bruno.examgenerate.endpoint.v1.course;
+package br.com.bruno.springjsf.endpoint.v1.course;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -19,12 +19,13 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import br.com.bruno.examgenerate.endpoint.v1.ProfessorEndpointTest;
+import br.com.bruno.examgenerate.SpringJsfApplication;
 import br.com.bruno.examgenerate.persistence.model.Course;
 import br.com.bruno.examgenerate.persistence.repository.CourseRepository;
+import br.com.bruno.springjsf.endpoint.v1.ProfessorEndpointTest;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = SpringJsfApplication.class)
 @AutoConfigureMockMvc
 public class CourseEndpointTest {
 	
@@ -123,7 +124,7 @@ public class CourseEndpointTest {
 		long id = 1L;
 		BDDMockito.doNothing().when(courseRepository).deleteById(id);
 		ResponseEntity<String> exchange = testRestTemplate
-				.exchange("/v1/professor/course/{id}", HttpMethod.DELETE, professorHeader, String.class, id);
+				.exchange("/v1/professor/course/{id}", HttpMethod.GET, professorHeader, String.class, id);
 		assertThat(exchange.getStatusCodeValue()).isEqualTo(200);
 	}
 	
@@ -132,7 +133,7 @@ public class CourseEndpointTest {
 		long id = -1L;
 		BDDMockito.doNothing().when(courseRepository).deleteById(id);
 		ResponseEntity<String> exchange = testRestTemplate
-				.exchange("/v1/professor/course/{id}", HttpMethod.DELETE, professorHeader, String.class, id);
+				.exchange("/v1/professor/course/{id}", HttpMethod.GET, professorHeader, String.class, id);
 		assertThat(exchange.getStatusCodeValue()).isEqualTo(404);
 	}
 	
