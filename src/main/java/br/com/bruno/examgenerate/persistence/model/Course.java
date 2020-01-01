@@ -1,7 +1,6 @@
 package br.com.bruno.examgenerate.persistence.model;
 
 import javax.annotation.Generated;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotEmpty;
@@ -18,15 +17,12 @@ public class Course extends AbstractEntity{
 	private String name;
 	@ManyToOne(optional = false)
 	private Professor professor;
-	@Column(columnDefinition = "boolean default true")
-	private boolean enabled = true;
-
+	
 	@Generated("SparkTools")
 	private Course(Builder builder) {
 		this.id = builder.id;
 		this.name = builder.name;
 		this.professor = builder.professor;
-		this.enabled = builder.enabled;
 	}
 	
 	public Course() {
@@ -44,15 +40,7 @@ public class Course extends AbstractEntity{
 	}
 	public void setProfessor(Professor professor) {
 		this.professor = professor;
-	}
-	
-	public boolean isEnabled() {
-		return enabled;
-	}
-
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
-	}
+	}	
 
 	/**
 	 * Creates builder to build {@link Course}.
@@ -71,7 +59,6 @@ public class Course extends AbstractEntity{
 		private Long id;
 		private String name;
 		private Professor professor;
-		private boolean enabled;
 
 		private Builder() {
 		}
@@ -88,11 +75,6 @@ public class Course extends AbstractEntity{
 
 		public Builder withProfessor(Professor professor) {
 			this.professor = professor;
-			return this;
-		}
-
-		public Builder withEnabled(boolean enabled) {
-			this.enabled = enabled;
 			return this;
 		}
 
