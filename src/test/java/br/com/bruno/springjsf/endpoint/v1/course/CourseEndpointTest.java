@@ -66,8 +66,8 @@ public class CourseEndpointTest {
 	@Before
 	public void setup() {
 		BDDMockito.when(courseRepository.findOne(course.getId())).thenReturn(course);
-		BDDMockito.when(courseRepository.listCourses("")).thenReturn(Collections.singletonList(course));
-		BDDMockito.when(courseRepository.listCourses("java")).thenReturn(Collections.singletonList(course));
+		BDDMockito.when(courseRepository.listCoursesByName("")).thenReturn(Collections.singletonList(course));
+		BDDMockito.when(courseRepository.listCoursesByName("java")).thenReturn(Collections.singletonList(course));
 	}
 	
 	@Test

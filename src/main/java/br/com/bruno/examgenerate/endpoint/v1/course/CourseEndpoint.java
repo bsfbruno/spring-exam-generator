@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.bruno.examgenerate.endpoint.v1.genericservice.GenericService;
 import br.com.bruno.examgenerate.persistence.model.Course;
 import br.com.bruno.examgenerate.persistence.repository.CourseRepository;
 import br.com.bruno.examgenerate.util.EndpointUtil;
@@ -29,13 +30,13 @@ public class CourseEndpoint {
 
 	private final CourseRepository courseRepository;
 	private final EndpointUtil endpointUtil;
-	private final CourseService courseService;
+	private final GenericService genericService;
 
 	@Autowired
-	public CourseEndpoint(CourseRepository courseRepository, EndpointUtil endpointUtil, CourseService courseService) {
+	public CourseEndpoint(CourseRepository courseRepository, EndpointUtil endpointUtil, GenericService genericService) {
 		this.courseRepository = courseRepository;
 		this.endpointUtil = endpointUtil;
-		this.courseService = courseService;
+		this.genericService = genericService;
 	}
 	
 	@ApiOperation(value = "Return a course based on its id")
@@ -54,7 +55,7 @@ public class CourseEndpoint {
 	@ApiOperation(value = "Delete a specific course and return 200 Ok with no body", response = Course.class)
 	@DeleteMapping(path = "{id}")
 	public ResponseEntity<?> delete(@PathVariable long id) {
-		courseService.throwResourceNotFoundCourse(id);
+		genericService.courseNotFound(id, courseRepository, "Course not found");
 		courseRepository.deleteById(id);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
@@ -62,7 +63,7 @@ public class CourseEndpoint {
 	@ApiOperation(value = "Update course and return 200 Ok with no body")
 	@PutMapping
 	public ResponseEntity<?> update(@Valid @RequestBody Course course) {
-		courseService.throwResourceNotFoundCourse(course);
+		genericService.courseNotFound(course, courseRepository, "Course not found");
 		courseRepository.save(course);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}

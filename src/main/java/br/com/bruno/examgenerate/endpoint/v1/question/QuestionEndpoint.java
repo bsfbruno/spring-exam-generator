@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.bruno.examgenerate.endpoint.v1.genericservice.GenericService;
 import br.com.bruno.examgenerate.persistence.model.Question;
 import br.com.bruno.examgenerate.persistence.repository.QuestionRepository;
 import br.com.bruno.examgenerate.util.EndpointUtil;
@@ -28,14 +29,14 @@ import io.swagger.annotations.ApiParam;
 public class QuestionEndpoint {
 
 	private final QuestionRepository questionRepository;
-	private final QuestionService questionService;
+	private final GenericService genericService;
 	private final EndpointUtil endpointUtil;
 	
 	@Autowired
-	public QuestionEndpoint(QuestionRepository questionRepository, QuestionService questionService,
+	public QuestionEndpoint(QuestionRepository questionRepository, GenericService genericService,
 			EndpointUtil endpointUtil) {
 		this.questionRepository = questionRepository;
-		this.questionService = questionService;
+		this.genericService = genericService;
 		this.endpointUtil = endpointUtil;
 	}
 	
@@ -56,7 +57,7 @@ public class QuestionEndpoint {
 	@ApiOperation(value = "Delete a specific question and return 200 ok with no body")
 	@DeleteMapping(path = "{id}")
 	public ResponseEntity<?> delete(@PathVariable long id) {
-		questionService.throwResourceNotFoundIfQuestionDoesNotExist(id);
+		genericService.courseNotFound(id, questionRepository, "Question not found");
 		questionRepository.deleteById(id);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
@@ -64,7 +65,7 @@ public class QuestionEndpoint {
 	@ApiOperation(value = "Update question and return 200 ok with no body")
 	@PutMapping
 	public ResponseEntity<?> update(@Valid @RequestBody Question question) {
-		questionService.throwResourceNotFoundExceptionDoesNotExist(question);
+		genericService.courseNotFound(question, questionRepository, "Question not found");
 		return new ResponseEntity<>(questionRepository.save(question), HttpStatus.OK);
 	}
 	
