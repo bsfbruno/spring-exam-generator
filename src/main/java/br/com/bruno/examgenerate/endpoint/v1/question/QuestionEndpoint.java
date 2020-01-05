@@ -24,7 +24,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
 @RestController
-@RequestMapping("v1/professor/question/question")
+@RequestMapping("v1/professor/course/question")
 @Api(description = "Operations related to courses' question")
 public class QuestionEndpoint {
 
@@ -47,9 +47,9 @@ public class QuestionEndpoint {
 	}
 	
 	@ApiOperation(value = "Return a list of question related to course", response = Question.class)
-	@GetMapping(path = "list")
+	@GetMapping(path = "list/{courseId}/")
 	public ResponseEntity<?> listQuestion(
-			@ApiParam("Course id") @RequestParam(value = "courseId") long courseId,
+			@PathVariable long courseId,
 			@ApiParam("Question title") @RequestParam(value = "title", defaultValue = "") String name) {
 		return new ResponseEntity<>(questionRepository.listQuestionsByCourseAndTitle(courseId, name), HttpStatus.OK);
 	}

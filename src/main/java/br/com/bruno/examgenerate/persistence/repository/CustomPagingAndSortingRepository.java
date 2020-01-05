@@ -23,7 +23,7 @@ public interface CustomPagingAndSortingRepository<T extends AbstractEntity, ID e
 	}
 
 	@Query("select e from #{#entityName} e where e.id = ?1 and e.professor = ?#{principal.professor} and e.enabled = true")
-	Course findOne(long id);
+	T findOne(long id);
 
 	default boolean existsById(Long id) {
 		return findOne(id) != null;

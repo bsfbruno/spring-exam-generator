@@ -39,7 +39,7 @@ public class CourseEndpointTest {
 	private HttpEntity<Void> wrongHeader;
 	private Course course = mockCourse();
 	
-	private static Course mockCourse() {
+	public static Course mockCourse() {
 		return Course.newCourse()
 				.withId(1L)
 				.withName("Java")
@@ -155,7 +155,5 @@ public class CourseEndpointTest {
 		BDDMockito.when(courseRepository.save(course)).thenReturn(course);
 		return testRestTemplate.exchange("/v1/professor/course/", HttpMethod.POST,
 				new HttpEntity<>(course, professorHeader.getHeaders()), String.class);
-	}
-	
-	
+	}	
 }
