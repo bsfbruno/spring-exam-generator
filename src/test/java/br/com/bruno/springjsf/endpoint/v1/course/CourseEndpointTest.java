@@ -124,7 +124,7 @@ public class CourseEndpointTest {
 		long id = 1L;
 		BDDMockito.doNothing().when(courseRepository).deleteById(id);
 		ResponseEntity<String> exchange = testRestTemplate
-				.exchange("/v1/professor/course/{id}", HttpMethod.GET, professorHeader, String.class, id);
+				.exchange("/v1/professor/course/{id}", HttpMethod.DELETE, professorHeader, String.class, id);
 		assertThat(exchange.getStatusCodeValue()).isEqualTo(200);
 	}
 	
@@ -133,7 +133,7 @@ public class CourseEndpointTest {
 		long id = -1L;
 		BDDMockito.doNothing().when(courseRepository).deleteById(id);
 		ResponseEntity<String> exchange = testRestTemplate
-				.exchange("/v1/professor/course/{id}", HttpMethod.GET, professorHeader, String.class, id);
+				.exchange("/v1/professor/course/{id}", HttpMethod.DELETE, professorHeader, String.class, id);
 		assertThat(exchange.getStatusCodeValue()).isEqualTo(404);
 	}
 	

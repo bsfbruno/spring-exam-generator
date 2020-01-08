@@ -22,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import br.com.bruno.examgenerate.SpringJsfApplication;
+import br.com.bruno.examgenerate.persistence.model.Course;
 import br.com.bruno.examgenerate.persistence.model.Question;
 import br.com.bruno.examgenerate.persistence.repository.QuestionRepository;
 import br.com.bruno.springjsf.endpoint.v1.ProfessorEndpointTest;
@@ -128,7 +129,7 @@ public class QuestionEndpointTest {
 	public void deleteQuestionWhenIdExistsShouldReturn200() throws Exception {
 		long id = 1L;
 		BDDMockito.doNothing().when(questionRepository).deleteById(id);
-		ResponseEntity<String> exchange = testRestTemplate.exchange("/v1/professor/course/question/{id}", HttpMethod.GET,
+		ResponseEntity<String> exchange = testRestTemplate.exchange("/v1/professor/course/question/{id}", HttpMethod.DELETE,
 				professorHeader, String.class, id);
 		assertThat(exchange.getStatusCodeValue()).isEqualTo(200);
 	}
@@ -137,16 +138,23 @@ public class QuestionEndpointTest {
 	public void deleteQuestionWhenIdDoesNotExistsShouldReturn404() throws Exception {
 		long id = -1L;
 		BDDMockito.doNothing().when(questionRepository).deleteById(id);
-		ResponseEntity<String> exchange = testRestTemplate.exchange("/v1/professor/course/question/{id}", HttpMethod.GET,
+		ResponseEntity<String> exchange = testRestTemplate.exchange("/v1/professor/course/question/{id}", HttpMethod.DELETE,
 				professorHeader, String.class, id);
 		assertThat(exchange.getStatusCodeValue()).isEqualTo(404);
 	}
 
 	@Test
-	public void createQuestionWhenNameIsNullShouldReturn400() throws Exception {
+	public void createQuestionWhenTitleIsNullShouldReturn400() throws Exception {
 		Question question = questionRepository.findOne(1L);
 		question.setTitle(null);
 		assertThat(createQuestion(question).getStatusCodeValue()).isEqualTo(400);
+	}
+	
+	@Test
+	public void createQuestionWhenCourseDoesNotExistsShouldReturn404() throws Exception {
+		Question question = questionRepository.findOne(1L);
+		question.setCourse(new Course());
+		assertThat(createQuestion(question).getStatusCodeValue()).isEqualTo(404);
 	}
 
 	@Test

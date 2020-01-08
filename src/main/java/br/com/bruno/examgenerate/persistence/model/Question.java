@@ -1,11 +1,11 @@
 package br.com.bruno.examgenerate.persistence.model;
 
+import javax.annotation.Generated;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotEmpty;
 
 import io.swagger.annotations.ApiModelProperty;
-import javax.annotation.Generated;
 
 @Entity
 public class Question extends AbstractEntity{

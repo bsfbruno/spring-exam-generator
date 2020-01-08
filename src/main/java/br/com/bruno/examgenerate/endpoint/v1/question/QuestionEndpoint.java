@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.bruno.examgenerate.endpoint.v1.genericservice.GenericService;
 import br.com.bruno.examgenerate.persistence.model.Question;
+import br.com.bruno.examgenerate.persistence.repository.CourseRepository;
 import br.com.bruno.examgenerate.persistence.repository.QuestionRepository;
 import br.com.bruno.examgenerate.util.EndpointUtil;
 import io.swagger.annotations.Api;
@@ -31,13 +32,15 @@ public class QuestionEndpoint {
 	private final QuestionRepository questionRepository;
 	private final GenericService genericService;
 	private final EndpointUtil endpointUtil;
+	private final CourseRepository courseRepository;
 	
 	@Autowired
 	public QuestionEndpoint(QuestionRepository questionRepository, GenericService genericService,
-			EndpointUtil endpointUtil) {
+			EndpointUtil endpointUtil, CourseRepository courseRepository) {
 		this.questionRepository = questionRepository;
 		this.genericService = genericService;
 		this.endpointUtil = endpointUtil;
+		this.courseRepository = courseRepository;
 	}
 	
 	@ApiOperation(value = "Return a question based on it's id", response = Question.class)
@@ -72,6 +75,7 @@ public class QuestionEndpoint {
 	@ApiOperation(value = "Create question and return the question created")
 	@PostMapping
 	public ResponseEntity<?> create(@Valid @RequestBody Question question) {
+		genericService.courseNotFound(question.getCourse(), courseRepository, "Course not found");
 		question.setProfessor(endpointUtil.extractProfessorFromToken());
 		return new ResponseEntity<>(questionRepository.save(question), HttpStatus.OK);
 	}
