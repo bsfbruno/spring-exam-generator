@@ -41,6 +41,12 @@ public class ChoiceEndpoint {
 		this.choiceRepository = choiceRepository;
 		this.questionRepository = questionRepository;
 	}
+	
+	@ApiOperation(value = "Return a choice based on its id")
+	@GetMapping(path = "{id}")
+	public ResponseEntity<?> getChoiceById(@PathVariable long id) {
+		return endpointUtil.returnObjectOrNotFound(choiceRepository.findOne(id));
+	}
 
 	@ApiOperation(value = "Return a list of choices related to the questionId", response = Choice[].class)
 	@GetMapping(path = "list/{questionId}/")
