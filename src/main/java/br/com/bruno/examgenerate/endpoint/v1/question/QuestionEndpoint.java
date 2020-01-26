@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.bruno.examgenerate.endpoint.v1.deleteservice.CascadeDeleteService;
 import br.com.bruno.examgenerate.endpoint.v1.genericservice.GenericService;
 import br.com.bruno.examgenerate.persistence.model.Question;
 import br.com.bruno.examgenerate.persistence.repository.CourseRepository;
@@ -33,14 +34,16 @@ public class QuestionEndpoint {
 	private final GenericService genericService;
 	private final EndpointUtil endpointUtil;
 	private final CourseRepository courseRepository;
+	private final CascadeDeleteService cascadeDeleteService;
 	
 	@Autowired
 	public QuestionEndpoint(QuestionRepository questionRepository, GenericService genericService,
-			EndpointUtil endpointUtil, CourseRepository courseRepository) {
+			EndpointUtil endpointUtil, CourseRepository courseRepository, CascadeDeleteService cascadeDeleteService) {
 		this.questionRepository = questionRepository;
 		this.genericService = genericService;
 		this.endpointUtil = endpointUtil;
 		this.courseRepository = courseRepository;
+		this.cascadeDeleteService = cascadeDeleteService;
 	}
 	
 	@ApiOperation(value = "Return a question based on it's id", response = Question.class)
@@ -57,11 +60,11 @@ public class QuestionEndpoint {
 		return new ResponseEntity<>(questionRepository.listQuestionsByCourseAndTitle(courseId, name), HttpStatus.OK);
 	}
 	
-	@ApiOperation(value = "Delete a specific question and return 200 ok with no body")
+	@ApiOperation(value = "Delete a specific question and all related choices and return 200 ok with no body")
 	@DeleteMapping(path = "{id}")
 	public ResponseEntity<?> delete(@PathVariable long id) {
 		validateQuestionExistenceOnDB(id, questionRepository);
-		questionRepository.deleteById(id);
+		cascadeDeleteService.cascadeDeleteQuestionAndChoice(id);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 

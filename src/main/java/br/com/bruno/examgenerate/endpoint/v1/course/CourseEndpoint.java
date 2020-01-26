@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.bruno.examgenerate.endpoint.v1.deleteservice.CascadeDeleteService;
 import br.com.bruno.examgenerate.endpoint.v1.genericservice.GenericService;
 import br.com.bruno.examgenerate.persistence.model.Course;
 import br.com.bruno.examgenerate.persistence.repository.CourseRepository;
-import br.com.bruno.examgenerate.persistence.repository.QuestionRepository;
 import br.com.bruno.examgenerate.util.EndpointUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -33,14 +33,15 @@ public class CourseEndpoint {
 	private final CourseRepository courseRepository;
 	private final EndpointUtil endpointUtil;
 	private final GenericService genericService;
-	private final QuestionRepository questionRepository;
+	private final CascadeDeleteService cascadeDeleteService;
 
 	@Autowired
-	public CourseEndpoint(CourseRepository courseRepository, EndpointUtil endpointUtil, GenericService genericService, QuestionRepository questionRepository) {
+	public CourseEndpoint(CourseRepository courseRepository, EndpointUtil endpointUtil, 
+			GenericService genericService, CascadeDeleteService cascadeDeleteService) {
 		this.courseRepository = courseRepository;
 		this.endpointUtil = endpointUtil;
 		this.genericService = genericService;
-		this.questionRepository = questionRepository;
+		this.cascadeDeleteService = cascadeDeleteService;
 	}
 	
 	@ApiOperation(value = "Return a course based on its id")
@@ -56,13 +57,12 @@ public class CourseEndpoint {
 		return endpointUtil.returnObjectOrNotFound(courseRepository.listCoursesByName(name));
 	}
 	
-	@ApiOperation(value = "Delete a specific course and return 200 Ok with no body", response = Course.class)
+	@ApiOperation(value = "Delete a specific course and all related question and choices and return 200 Ok with no body", response = Course.class)
 	@DeleteMapping(path = "{id}")
 	@Transactional
 	public ResponseEntity<?> delete(@PathVariable long id) {
 		validatecourseExistenceOnDB(id, courseRepository);
-		courseRepository.deleteById(id);
-		questionRepository.deleteAllQuestionsRelatedToCourseId(id);
+		cascadeDeleteService.cascadeDeleteCourseQuestionAndChoice(id);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
