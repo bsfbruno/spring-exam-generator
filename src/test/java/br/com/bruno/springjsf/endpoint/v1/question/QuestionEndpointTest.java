@@ -124,6 +124,27 @@ public class QuestionEndpointTest {
 				professorHeader, String.class);
 		assertThat(exchange.getStatusCodeValue()).isEqualTo(200);
 	}
+	
+	@Test
+	public void createQuestionWhenTitleIsNullShouldReturn400() throws Exception {
+		Question question = questionRepository.findOne(1L);
+		question.setTitle(null);
+		assertThat(createQuestion(question).getStatusCodeValue()).isEqualTo(400);
+	}
+	
+	@Test
+	public void createQuestionWhenCourseDoesNotExistsShouldReturn404() throws Exception {
+		Question question = questionRepository.findOne(1L);
+		question.setCourse(new Course());
+		assertThat(createQuestion(question).getStatusCodeValue()).isEqualTo(404);
+	}
+
+	@Test
+	public void createQuestionWhenEverythingIsRightShouldReturn200() throws Exception {
+		Question question = questionRepository.findOne(1L);		
+		question.setId(null);
+		assertThat(createQuestion(question).getStatusCodeValue()).isEqualTo(200);
+	}
 
 	@Test
 	public void deleteQuestionWhenIdExistsShouldReturn200() throws Exception {
@@ -141,28 +162,7 @@ public class QuestionEndpointTest {
 		ResponseEntity<String> exchange = testRestTemplate.exchange("/v1/professor/course/question/{id}", HttpMethod.DELETE,
 				professorHeader, String.class, id);
 		assertThat(exchange.getStatusCodeValue()).isEqualTo(404);
-	}
-
-	@Test
-	public void createQuestionWhenTitleIsNullShouldReturn400() throws Exception {
-		Question question = questionRepository.findOne(1L);
-		question.setTitle(null);
-		assertThat(createQuestion(question).getStatusCodeValue()).isEqualTo(400);
-	}
-	
-	@Test
-	public void createQuestionWhenCourseDoesNotExistsShouldReturn404() throws Exception {
-		Question question = questionRepository.findOne(1L);
-		question.setCourse(new Course());
-		assertThat(createQuestion(question).getStatusCodeValue()).isEqualTo(404);
-	}
-
-	@Test
-	public void createQuestionWhenEverythingIsRightShouldReturn200() throws Exception {
-		Question question = questionRepository.findOne(1L);
-		question.setId(null);
-		assertThat(createQuestion(question).getStatusCodeValue()).isEqualTo(200);
-	}
+	}	
 
 	private ResponseEntity<String> createQuestion(Question question) {
 		BDDMockito.when(questionRepository.save(question)).thenReturn(question);

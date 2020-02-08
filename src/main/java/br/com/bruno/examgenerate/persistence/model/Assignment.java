@@ -1,97 +1,78 @@
 package br.com.bruno.examgenerate.persistence.model;
 
-import javax.annotation.Generated;
-import javax.persistence.Column;
+import java.time.LocalDateTime;
+
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 import io.swagger.annotations.ApiModelProperty;
+import javax.annotation.Generated;
 
 @Entity
-public class Choice extends AbstractEntity{
+public class Assignment extends AbstractEntity{
 
 	private static final long serialVersionUID = 1L;
 
 	@NotEmpty(message = "The field title cannot be empty")
-	@ApiModelProperty(notes = "The title of the choice")
+	@ApiModelProperty(notes = "The title of the assignment")
 	private String title;
-	
-	@NotNull(message = "The field correctAnswer must be true or false")
-	@ApiModelProperty(notes = "Correct answer for the associated question, you can have only one correct answer per question")
-	@Column(columnDefinition = "boolean default false")
-	private boolean correctAnswer;
-	
+	private LocalDateTime createdAt = LocalDateTime.now();
 	@ManyToOne(optional = false)
-	private Question question;
-	
+	private Course course;
 	@ManyToOne(optional = false)
 	private Professor professor;
-	
-	public Choice() {
-		
-	}
 
 	@Generated("SparkTools")
-	private Choice(Builder builder) {
+	private Assignment(Builder builder) {
 		this.id = builder.id;
 		this.title = builder.title;
-		this.correctAnswer = builder.correctAnswer;
-		this.question = builder.question;
+		this.createdAt = builder.createdAt;
+		this.course = builder.course;
 		this.professor = builder.professor;
 	}
-
+	
 	public String getTitle() {
 		return title;
 	}
-
 	public void setTitle(String title) {
 		this.title = title;
 	}
-
-	public boolean isCorrectAnswer() {
-		return correctAnswer;
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
 	}
-
-	public void setCorrectAnswer(boolean correctAnswer) {
-		this.correctAnswer = correctAnswer;
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
 	}
-
-	public Question getQuestion() {
-		return question;
+	public Course getCourse() {
+		return course;
 	}
-
-	public void setQuestion(Question question) {
-		this.question = question;
+	public void setCourse(Course course) {
+		this.course = course;
 	}
-
 	public Professor getProfessor() {
 		return professor;
 	}
-
 	public void setProfessor(Professor professor) {
 		this.professor = professor;
 	}
-
 	/**
-	 * Creates builder to build {@link Choice}.
+	 * Creates builder to build {@link Assignment}.
 	 * @return created builder
 	 */
 	@Generated("SparkTools")
-	public static Builder newChoice() {
+	public static Builder newAssignment() {
 		return new Builder();
 	}
-
 	/**
-	 * Builder to build {@link Choice}.
+	 * Builder to build {@link Assignment}.
 	 */
 	@Generated("SparkTools")
 	public static final class Builder {
 		private Long id;
 		private String title;
-		private boolean correctAnswer;
-		private Question question;
+		private LocalDateTime createdAt;
+		private Course course;
 		private Professor professor;
 
 		private Builder() {
@@ -107,13 +88,13 @@ public class Choice extends AbstractEntity{
 			return this;
 		}
 
-		public Builder withCorrectAnswer(boolean correctAnswer) {
-			this.correctAnswer = correctAnswer;
+		public Builder withCreatedAt(LocalDateTime createdAt) {
+			this.createdAt = createdAt;
 			return this;
 		}
 
-		public Builder withQuestion(Question question) {
-			this.question = question;
+		public Builder withCourse(Course course) {
+			this.course = course;
 			return this;
 		}
 
@@ -122,8 +103,8 @@ public class Choice extends AbstractEntity{
 			return this;
 		}
 
-		public Choice build() {
-			return new Choice(this);
+		public Assignment build() {
+			return new Assignment(this);
 		}
 	}
 }

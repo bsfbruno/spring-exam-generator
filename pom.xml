@@ -78,6 +78,13 @@
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-data</artifactId>
 		</dependency>
+		
+		<!-- Dependency used to LocalDateTime property run correctly -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-java8</artifactId>
+			<version>5.3.9.Final</version>
+		</dependency>
 	</dependencies>
 
 	<build>

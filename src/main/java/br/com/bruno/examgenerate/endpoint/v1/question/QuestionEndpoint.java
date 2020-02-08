@@ -1,10 +1,11 @@
-package br.com.bruno.examgenerate.endpoint.v1.question;
+ package br.com.bruno.examgenerate.endpoint.v1.question;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -52,18 +53,19 @@ public class QuestionEndpoint {
 		return endpointUtil.returnObjectOrNotFound(questionRepository.findOne(id));
 	}
 	
-	@ApiOperation(value = "Return a list of question related to course", response = Question.class)
+	@ApiOperation(value = "Return a list of question related to course", response = Question[].class)
 	@GetMapping(path = "list/{courseId}/")
 	public ResponseEntity<?> listQuestion(
 			@PathVariable long courseId,
-			@ApiParam("Question title") @RequestParam(value = "title", defaultValue = "") String name) {
-		return new ResponseEntity<>(questionRepository.listQuestionsByCourseAndTitle(courseId, name), HttpStatus.OK);
+			@ApiParam("Question title") @RequestParam(value = "title", defaultValue = "") String title) {
+		return new ResponseEntity<>(questionRepository.listQuestionsByCourseAndTitle(courseId, title), HttpStatus.OK);
 	}
 	
 	@ApiOperation(value = "Delete a specific question and all related choices and return 200 ok with no body")
 	@DeleteMapping(path = "{id}")
+	@Transactional
 	public ResponseEntity<?> delete(@PathVariable long id) {
-		validateQuestionExistenceOnDB(id, questionRepository);
+		validateQuestionExistenceOnDB(id);
 		cascadeDeleteService.cascadeDeleteQuestionAndChoice(id);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
@@ -71,18 +73,19 @@ public class QuestionEndpoint {
 	@ApiOperation(value = "Update question and return 200 ok with no body")
 	@PutMapping
 	public ResponseEntity<?> update(@Valid @RequestBody Question question) {
-		validateQuestionExistenceOnDB(question.getId(), questionRepository);
+		validateQuestionExistenceOnDB(question.getId());
 		questionRepository.save(question);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
-	private void validateQuestionExistenceOnDB(Long id, QuestionRepository questionRepository) {
+	private void validateQuestionExistenceOnDB(Long id) {
 		genericService.courseNotFound(id, questionRepository, "Question not found");
 	}
 	
 	@ApiOperation(value = "Create question and return the question created")
 	@PostMapping
 	public ResponseEntity<?> create(@Valid @RequestBody Question question) {
+		question.getCourse().getId();
 		genericService.courseNotFound(question.getCourse(), courseRepository, "Course not found");
 		question.setProfessor(endpointUtil.extractProfessorFromToken());
 		return new ResponseEntity<>(questionRepository.save(question), HttpStatus.OK);

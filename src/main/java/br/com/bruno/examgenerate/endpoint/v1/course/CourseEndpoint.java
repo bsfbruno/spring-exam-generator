@@ -61,7 +61,7 @@ public class CourseEndpoint {
 	@DeleteMapping(path = "{id}")
 	@Transactional
 	public ResponseEntity<?> delete(@PathVariable long id) {
-		validatecourseExistenceOnDB(id, courseRepository);
+		validatecourseExistenceOnDB(id);
 		cascadeDeleteService.cascadeDeleteCourseQuestionAndChoice(id);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
@@ -69,12 +69,12 @@ public class CourseEndpoint {
 	@ApiOperation(value = "Update course and return 200 Ok with no body")
 	@PutMapping
 	public ResponseEntity<?> update(@Valid @RequestBody Course course) {
-		validatecourseExistenceOnDB(course.getId(), courseRepository);
+		validatecourseExistenceOnDB(course.getId());
 		courseRepository.save(course);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
-	private void validatecourseExistenceOnDB(Long id, CourseRepository courseRepository) {
+	private void validatecourseExistenceOnDB(Long id) {
 		genericService.courseNotFound(id, courseRepository, "Course not found");		
 	}
 	
