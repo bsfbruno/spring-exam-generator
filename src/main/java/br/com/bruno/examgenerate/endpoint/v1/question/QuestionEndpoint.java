@@ -66,7 +66,7 @@ public class QuestionEndpoint {
 	@Transactional
 	public ResponseEntity<?> delete(@PathVariable long id) {
 		validateQuestionExistenceOnDB(id);
-		cascadeDeleteService.cascadeDeleteQuestionAndChoice(id);
+		cascadeDeleteService.deleteQuestionAndAllRelatedEntities(id);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 

@@ -22,6 +22,9 @@ public class Assignment extends AbstractEntity{
 	private Course course;
 	@ManyToOne(optional = false)
 	private Professor professor;
+	
+	public Assignment() {
+	}
 
 	@Generated("SparkTools")
 	private Assignment(Builder builder) {

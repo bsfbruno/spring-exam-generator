@@ -1,4 +1,4 @@
-package br.com.bruno.springjsf;
+package br.com.bruno.examgenerate;
 
 import org.junit.Test;
 

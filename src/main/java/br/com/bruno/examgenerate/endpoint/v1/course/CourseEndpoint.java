@@ -62,7 +62,7 @@ public class CourseEndpoint {
 	@Transactional
 	public ResponseEntity<?> delete(@PathVariable long id) {
 		validatecourseExistenceOnDB(id);
-		cascadeDeleteService.cascadeDeleteCourseQuestionAndChoice(id);
+		cascadeDeleteService.deleteCourseAndAllRelatedEntities(id);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	

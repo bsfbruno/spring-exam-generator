@@ -1,4 +1,4 @@
-package br.com.bruno.springjsf.endpoint.v1.question;
+package br.com.bruno.examgenerate.endpoint.v1.question;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -22,11 +22,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import br.com.bruno.examgenerate.SpringJsfApplication;
+import br.com.bruno.examgenerate.endpoint.v1.ProfessorEndpointTest;
+import br.com.bruno.examgenerate.endpoint.v1.course.CourseEndpointTest;
 import br.com.bruno.examgenerate.persistence.model.Course;
 import br.com.bruno.examgenerate.persistence.model.Question;
 import br.com.bruno.examgenerate.persistence.repository.QuestionRepository;
-import br.com.bruno.springjsf.endpoint.v1.ProfessorEndpointTest;
-import br.com.bruno.springjsf.endpoint.v1.course.CourseEndpointTest;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = SpringJsfApplication.class)

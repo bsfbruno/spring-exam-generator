@@ -1,4 +1,4 @@
-package br.com.bruno.springjsf.endpoint.v1;
+package br.com.bruno.examgenerate.endpoint.v1;
 
 import br.com.bruno.examgenerate.persistence.model.Professor;
 
